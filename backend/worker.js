@@ -85,6 +85,46 @@ function parseItems(body) {
   return items;
 }
 
+function parseOrderRequest(body) {
+  if (!body || typeof body !== "object" || Array.isArray(body)
+    || Object.keys(body).length !== 2
+    || !Object.hasOwn(body, "items") || !Object.hasOwn(body, "customer")) {
+    return null;
+  }
+
+  const items = parseItems({ items: body.items });
+  const customer = body.customer;
+  if (!items || !customer || typeof customer !== "object" || Array.isArray(customer)
+    || Object.keys(customer).length !== 3
+    || !Object.hasOwn(customer, "name")
+    || !Object.hasOwn(customer, "phone")
+    || !Object.hasOwn(customer, "email")
+    || typeof customer.name !== "string"
+    || typeof customer.phone !== "string"
+    || typeof customer.email !== "string") {
+    return null;
+  }
+
+  const name = customer.name.trim();
+  const phone = customer.phone.trim();
+  const email = customer.email.trim();
+  const phoneDigits = phone.replace(/\D/g, "");
+  if (name.length < 1 || name.length > 160
+    || /[\u0000-\u001f\u007f]/.test(name)
+    || phone.length > 32
+    || !/^\+?[0-9][0-9\s().-]*[0-9]$/.test(phone)
+    || phoneDigits.length < 8 || phoneDigits.length > 15
+    || email.length > 254
+    || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return null;
+  }
+
+  return {
+    items,
+    customer: { name, phone, email },
+  };
+}
+
 async function getProducts(env, origin) {
   if (env.STORE_ENABLED !== "true") {
     return errorResponse("La boutique est désactivée.", 503, origin);
@@ -92,16 +132,18 @@ async function getProducts(env, origin) {
   if (!env.DB) return errorResponse("Catalogue indisponible.", 503, origin);
 
   const result = await env.DB.prepare(
-    "SELECT id, shop_name AS shopName, name, price_xof AS priceXof, stock AS available "
+    "SELECT id, shop_name AS shopName, name, variant_label AS variantLabel, "
+      + "price_xof AS priceXof, stock AS available "
       + "FROM products WHERE is_active = 1 AND stock > 0 AND trim(shop_name) != '' "
-      + "ORDER BY name LIMIT 100",
+      + "ORDER BY name, variant_label LIMIT 100",
   ).all();
 
   return jsonResponse({ products: result.results }, 200, origin);
 }
 
 async function createOrder(request, env, origin) {
-  if (env.STORE_ENABLED !== "true" || env.ORDERS_ENABLED !== "true") {
+  if (env.STORE_ENABLED !== "true" || env.ORDERS_ENABLED !== "true"
+    || env.ORDER_CONTACT_ENABLED !== "true") {
     return errorResponse("Les commandes sont désactivées.", 503, origin);
   }
   if (!env.DB) return errorResponse("Commandes indisponibles.", 503, origin);
@@ -145,14 +187,16 @@ async function createOrder(request, env, origin) {
     return errorResponse("La demande JSON est invalide.", 400, origin);
   }
 
-  const items = parseItems(body);
-  if (!items) {
-    return errorResponse("La sélection d’articles est invalide.", 400, origin);
+  const orderRequest = parseOrderRequest(body);
+  if (!orderRequest) {
+    return errorResponse("La sélection ou les coordonnées sont invalides.", 400, origin);
   }
+  const { items, customer } = orderRequest;
 
   const placeholders = items.map(() => "?").join(", ");
   const products = await env.DB.prepare(
-    `SELECT id, shop_name AS shopName, name, price_xof AS priceXof, stock `
+    `SELECT id, shop_name AS shopName, name, variant_label AS variantLabel, `
+      + `price_xof AS priceXof, stock `
       + `FROM products WHERE is_active = 1 AND trim(shop_name) != '' `
       + `AND id IN (${placeholders})`,
   ).bind(...items.map((item) => item.productId)).all();
@@ -165,6 +209,7 @@ async function createOrder(request, env, origin) {
     return errorResponse("Les commandes de plusieurs boutiques ne sont pas ouvertes.", 409, origin);
   }
 
+  const deliveryShopName = products.results[0].shopName;
   const byId = new Map(products.results.map((product) => [product.id, product]));
   let totalXof = 0;
   for (const item of items) {
@@ -196,20 +241,32 @@ async function createOrder(request, env, origin) {
       + "eligible AS ("
       + "SELECT p.id FROM products p JOIN requested r ON r.id = p.id "
       + "WHERE p.is_active = 1 AND p.price_xof = r.expected_price "
-      + "AND p.stock >= r.quantity"
+      + "AND p.stock >= r.quantity AND p.shop_name = ?"
       + ") "
-      + "INSERT INTO orders (id, status, total_xof, created_at) "
-      + "SELECT ?, 'pending', ?, ? "
+      + "INSERT INTO orders "
+      + "(id, status, total_xof, created_at, customer_name, customer_phone, customer_email, delivery_shop_name) "
+      + "SELECT ?, 'pending', ?, ?, ?, ?, ?, ? "
       + "WHERE (SELECT count(*) FROM eligible) = (SELECT count(*) FROM requested)",
-  ).bind(...requestedParams, orderId, totalXof, createdAt);
+  ).bind(
+    ...requestedParams,
+    deliveryShopName,
+    orderId,
+    totalXof,
+    createdAt,
+    customer.name,
+    customer.phone,
+    customer.email,
+    deliveryShopName,
+  );
 
   const statements = [insertOrder];
   for (const item of items) {
     const product = byId.get(item.productId);
     statements.push(env.DB.prepare(
       "INSERT INTO order_items "
-        + "(order_id, product_id, product_name, shop_name, unit_price_xof, quantity, line_total_xof) "
-        + "SELECT ?, id, name, shop_name, price_xof, ?, price_xof * ? "
+        + "(order_id, product_id, product_name, variant_label, shop_name, "
+        + "unit_price_xof, quantity, line_total_xof) "
+        + "SELECT ?, id, name, variant_label, shop_name, price_xof, ?, price_xof * ? "
         + "FROM products WHERE id = ? AND is_active = 1 AND stock >= ? "
         + "AND price_xof = ? AND shop_name = ? "
         + "AND EXISTS (SELECT 1 FROM orders WHERE id = ?)",
@@ -238,6 +295,33 @@ async function createOrder(request, env, origin) {
       payment: "not_enabled",
     },
   }, 201, origin);
+}
+
+export async function markOrderDispatched(env, { orderId, shopName }) {
+  if (!env.DB || typeof orderId !== "string" || typeof shopName !== "string") {
+    return false;
+  }
+
+  const result = await env.DB.prepare(
+    "UPDATE orders SET dispatched_at = ? "
+      + "WHERE id = ? AND delivery_shop_name = ? AND status = 'pending' "
+      + "AND payment_status = 'paid' AND dispatched_at IS NULL AND cancelled_at IS NULL",
+  ).bind(new Date().toISOString(), orderId, shopName).run();
+  return result.meta.changes === 1;
+}
+
+export async function cancelOrderBeforeDispatch(env, { orderId, shopName }) {
+  if (!env.DB || typeof orderId !== "string" || typeof shopName !== "string") {
+    return false;
+  }
+
+  const result = await env.DB.prepare(
+    "UPDATE orders SET status = 'cancelled', cancelled_at = ? "
+      + "WHERE id = ? AND delivery_shop_name = ? AND status = 'pending' "
+      + "AND payment_status = 'not_enabled' "
+      + "AND dispatched_at IS NULL AND cancelled_at IS NULL",
+  ).bind(new Date().toISOString(), orderId, shopName).run();
+  return result.meta.changes === 1;
 }
 
 export default {

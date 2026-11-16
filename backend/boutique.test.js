@@ -93,6 +93,7 @@ test("loads only validated API products and keeps cart actions local", async () 
         id: "product-1",
         shopName: "Boutique confirmée",
         name: "<img src=x onerror=alert(1)>",
+        variantLabel: "Pointure 45",
         priceXof: 2500,
         available: 2,
       }],
@@ -107,6 +108,7 @@ test("loads only validated API products and keeps cart actions local", async () 
   assert.equal(grid.children.length, 1);
   assert.equal(grid.children[0].children.some((child) => child.tagName === "IMG"), false);
   assert.match(grid.children[0].children[1].textContent, /<img/);
+  assert.equal(grid.children[0].children[2].textContent, "Pointure 45");
 
   const addButton = grid.children[0].children.find((child) => child.dataset.addToCart);
   const click = page.listeners.get("click");
@@ -116,6 +118,10 @@ test("loads only validated API products and keeps cart actions local", async () 
 
   assert.equal(page.cartCounts[0].textContent, 2);
   assert.equal(page.fetchCalls.length, 1);
+  assert.match(
+    page.elements["[data-cart-items]"].children[0].children[0].children[0].children[1].textContent,
+    /Pointure 45/,
+  );
   assert.match(page.elements["[data-cart-feedback]"].textContent, /disponibilité/);
 });
 
@@ -138,6 +144,7 @@ test("renders the Worker catalog response without opening order submission", asy
             id: "real-catalog-fixture",
             shopName: "Boutique test",
             name: "Article de test",
+            variantLabel: "",
             priceXof: 2500,
             available: 2,
           }],

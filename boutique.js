@@ -35,6 +35,10 @@ function renderProduct(product) {
   const name = document.createElement("h3");
   name.textContent = product.name;
 
+  const variant = document.createElement("p");
+  variant.className = "product-description";
+  variant.textContent = product.variantLabel;
+
   const stock = document.createElement("p");
   stock.className = "product-description";
   stock.textContent = `Stock indiqué : ${product.available}`;
@@ -49,7 +53,9 @@ function renderProduct(product) {
   button.dataset.addToCart = product.id;
   button.textContent = "Ajouter au panier";
 
-  card.append(shop, name, stock, price, button);
+  card.append(shop, name);
+  if (product.variantLabel) card.append(variant);
+  card.append(stock, price, button);
   return card;
 }
 
@@ -62,6 +68,8 @@ function isValidProduct(product) {
     && typeof product.name === "string"
     && product.name.trim().length > 0
     && product.name.length <= 160
+    && typeof product.variantLabel === "string"
+    && product.variantLabel.length <= 80
     && typeof product.shopName === "string"
     && product.shopName.trim().length > 0
     && product.shopName.length <= 120
@@ -100,7 +108,8 @@ function updateCart(message = "") {
       const name = document.createElement("strong");
       name.textContent = product.name;
       const note = document.createElement("span");
-      note.textContent = `${product.shopName} · ${quantity} × ${formatPrice(product.priceXof)}`;
+      const variant = product.variantLabel ? ` · ${product.variantLabel}` : "";
+      note.textContent = `${product.shopName}${variant} · ${quantity} × ${formatPrice(product.priceXof)}`;
       details.append(name, note);
 
       const removeButton = document.createElement("button");
@@ -108,7 +117,8 @@ function updateCart(message = "") {
       removeButton.type = "button";
       removeButton.dataset.cartAction = "remove";
       removeButton.dataset.productId = id;
-      removeButton.setAttribute("aria-label", `Retirer un article : ${product.name}`);
+      const variantDescription = product.variantLabel ? ` ${product.variantLabel}` : "";
+      removeButton.setAttribute("aria-label", `Retirer un article : ${product.name}${variantDescription}`);
       removeButton.textContent = "−";
       item.append(details, removeButton);
       list.append(item);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Informations de confidentialité sur la version de démonstration de Petits Prix.">
+    <meta name="description" content="Informations sur les données du catalogue public Petits Prix et les commandes désactivées.">
     <meta name="theme-color" content="#fbfaf7">
     <title>Confidentialité — Petits Prix</title>
     <link rel="stylesheet" href="../style.css">
@@ -25,19 +25,19 @@
 
     <main class="page">
       <p class="eyebrow">Clair et transparent</p>
-      <h1>Confidentialité de la démo</h1>
-      <p class="lede">Cette page décrit le fonctionnement de la version de démonstration Petits Prix&nbsp;: ce que l’application garde temporairement sur l’appareil et ce qui se passe lorsque des images d’exemple sont chargées.</p>
+      <h1>Confidentialité du catalogue Petits Prix</h1>
+      <p class="lede">Cette page décrit le catalogue public et le panier temporaire. Le site n’accepte pas de commande et ne collecte pas de coordonnées client.</p>
 
       <aside class="notice" aria-label="Portée de cette notice">
         <span class="notice-icon" aria-hidden="true">i</span>
-        <p><strong>Version démo uniquement.</strong> L’application ne possède pas de compte, ne transmet pas les commandes ou formulaires à une boutique, n’accepte pas de paiement et n’est pas connectée à un service de paiement ou à Supabase.</p>
+        <p><strong>Consultation uniquement.</strong> Le catalogue est public, mais le site ne possède pas de compte, n’accepte pas de commande ni de paiement, et ne collecte aucune coordonnée client.</p>
       </aside>
 
       <div class="content-grid">
         <section class="card">
           <h2>Site vitrine et panier temporaire</h2>
-          <p>Aucune fiche produit réelle n’est actuellement affichée. Le panier fonctionne uniquement dans la mémoire de la page : son contenu disparaît lorsque la page est rechargée ou fermée.</p>
-          <p>Le site interroge le Worker Cloudflare pour le catalogue, mais ne transmet ni panier ni commande et ne demande aucune coordonnée client. La base D1 ne contient aucun article; le Worker refuse l’accès au catalogue et aux commandes tant que les fonctions restent désactivées. CinetPay est désactivé; le module Sandbox n’est appelé par aucune route.</p>
+          <p>Le catalogue public affiche les informations communiquées par les boutiques partenaires (nom de la boutique, produit, prix, pointure et stock indiqué). Le panier fonctionne uniquement dans la mémoire de la page : son contenu disparaît lorsque la page est rechargée ou fermée.</p>
+          <p>Le site interroge le Worker Cloudflare pour afficher les fiches, mais ne transmet ni panier ni commande et ne demande aucune coordonnée client. La route de commande reste fermée. CinetPay est désactivé; le module Sandbox n’est appelé par aucune route.</p>
         </section>
 
         <section class="card">
@@ -47,42 +47,40 @@
         </section>
 
         <section class="card">
-          <h2>Informations utilisées dans l’application</h2>
-          <p>Le catalogue et les boutiques sont fictifs. Pendant l’utilisation, l’application garde en mémoire sur l’appareil le panier, les favoris, la commune sélectionnée, l’historique des demandes de démonstration et la prévisualisation du formulaire boutique.</p>
-          <p>La prévisualisation peut contenir le nom de boutique saisi, une catégorie, une commune et un contact facultatif. Le formulaire ne transmet pas ces informations à l’éditeur. Elles ne sont pas conservées par l’application après sa fermeture.</p>
-          <p><strong>Conseil&nbsp;:</strong> utilisez seulement des exemples fictifs. Ne saisissez pas de numéro de téléphone, d’adresse ni d’autre information personnelle réelle.</p>
+          <h2>Informations utilisées sur le site</h2>
+          <p>Les fiches affichées dans le catalogue proviennent des boutiques partenaires; leurs prix et stocks sont indiqués à titre d’information et ne réservent aucun article. Pendant l’utilisation, la page garde en mémoire uniquement le panier temporaire.</p>
+          <p>Aucun formulaire ne demande de nom, de numéro de téléphone, d’adresse e-mail ou d’adresse de livraison.</p>
         </section>
 
         <section class="card">
           <h2>Images chargées depuis Internet</h2>
-          <p>Les photos illustratives sont demandées au domaine <code>images.unsplash.com</code>. Le chargement nécessite une connexion Internet depuis l’appareil. Comme pour une requête Web, le fournisseur d’images et les intermédiaires réseau peuvent recevoir des informations techniques de connexion, par exemple l’adresse IP et des en-têtes réseau. Leur traitement relève de leurs propres pratiques et politiques, que l’éditeur ne contrôle pas.</p>
-          <p>Les images ne représentent pas des stocks ou boutiques réels de Petits Prix. L’éditeur doit vérifier leurs droits et conditions d’utilisation avant toute distribution de l’application.</p>
+          <p>Aucune image de produit n’est chargée depuis un fournisseur tiers dans le catalogue actuellement publié.</p>
         </section>
 
         <section class="card">
           <h2>Comptes, commandes et paiements</h2>
           <p>Cette version ne propose ni inscription ni connexion à un compte. Aucune commande réelle n’est envoyée, aucun paiement n’est traité et aucune livraison ou mise en relation avec une boutique n’est fournie.</p>
-          <p>Les prix et stocks d’exemple de l’application mobile ne sont pas des offres de vente. Aucun paiement, prélèvement de commission ni reversement n’a lieu sur ce site.</p>
+          <p>Le catalogue ne permet pas de réserver les produits ou d’en acheter. Aucun paiement, prélèvement de commission ni reversement n’a lieu sur ce site.</p>
         </section>
 
         <section class="card">
           <h2>Backend et protection contre les abus</h2>
-          <p>Les requêtes du catalogue passent par un Worker Cloudflare public. Pour limiter les abus, le Worker utilise l’adresse IP de connexion comme clé de limitation de débit; le code ne conserve pas cette adresse dans D1. Les routes de catalogue et de commandes restent fermées. Cloudflare peut traiter des données techniques de connexion selon ses propres règles. Cette notice devra être réévaluée avant toute collecte de coordonnées client ou ouverture des commandes.</p>
+          <p>Les requêtes du catalogue passent par un Worker Cloudflare public. Pour limiter les abus, le Worker utilise l’adresse IP de connexion comme clé de limitation de débit; le code ne conserve pas cette adresse dans D1. La route du catalogue est publique et la route de commande reste fermée. Cloudflare peut traiter des données techniques de connexion selon ses propres règles. Cette notice devra être réévaluée avant toute collecte de coordonnées client ou ouverture des commandes.</p>
         </section>
 
         <section class="card">
           <h2>Conservation et contrôle</h2>
-          <p>Les informations liées aux parcours de démonstration restent dans la mémoire de l’application pendant son utilisation et disparaissent à sa fermeture. La démo ne fournit pas de compte permettant de consulter, exporter ou supprimer des données à distance.</p>
+          <p>Le panier temporaire reste dans la mémoire de la page et disparaît au rechargement ou à sa fermeture. Aucun compte n’existe et aucune donnée de commande n’est conservée; le site ne propose donc pas de consultation, d’export ou de suppression à distance.</p>
           <p>Si vous contactez l’éditeur par e-mail, votre fournisseur de messagerie traite le message et l’adresse d’envoi afin de l’acheminer. L’éditeur reçoit le message que vous choisissez d’envoyer; évitez d’y inclure des informations sensibles.</p>
         </section>
 
         <section class="card">
           <h2>Changements de version</h2>
-          <p>Cette notice devra être mise à jour avant l’ouverture de l’API ou l’ajout de comptes, de formulaires, de commandes, de paiements ou d’autres services connectés. Cette page ne constitue pas un avis juridique ni une garantie de conformité réglementaire.</p>
+          <p>Cette notice devra être mise à jour avant toute collecte de coordonnées, ouverture de commandes ou paiements, ajout de comptes ou d’autres services connectés. Cette page ne constitue pas un avis juridique ni une garantie de conformité réglementaire.</p>
         </section>
       </div>
 
-      <p class="meta">Cette notice décrit le code de la démo préparée. L’éditeur doit la relire au regard du build réellement distribué et des pays ciblés. Voir aussi la page <a href="../aide/">Aide et contact</a>.</p>
+      <p class="meta">Cette notice décrit le site actuellement publié. L’éditeur doit la relire au regard des traitements réellement réalisés et des pays ciblés. Voir aussi la page <a href="../aide/">Aide et contact</a>.</p>
     </main>
 
     <footer class="site-footer">
