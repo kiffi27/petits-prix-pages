@@ -33,27 +33,38 @@
 
       <aside class="notice" aria-label="Information importante sur la démo">
         <span class="notice-icon" aria-hidden="true">!</span>
-        <p><strong>C’est une démonstration.</strong> Aucun article réel n’est vendu ici. Les produits, boutiques, montants et demandes affichés sont des exemples; aucune commande n’est envoyée, aucun paiement Wave n’est accepté et aucune livraison n’est organisée.</p>
+        <p><strong>La boutique n’est pas encore ouverte.</strong> Aucun article réel n’est actuellement affiché; aucune commande n’est envoyée, aucun paiement n’est accepté et aucune livraison n’est organisée.</p>
       </aside>
 
       <div class="content-grid two-columns">
         <section class="card">
+          <h2>Comment fonctionne la boutique du site&nbsp;?</h2>
+          <p>Le site interroge le Worker Cloudflare pour le catalogue. Le Worker est public, mais la boutique reste désactivée; aucun article réel n’est affiché.</p>
+          <p>Le panier reste temporaire dans la page. Les commandes et paiements CinetPay sont désactivés; le site ne demande aucune coordonnée client.</p>
+        </section>
+
+        <section class="card">
           <h2>Comment essayer l’application&nbsp;?</h2>
           <ul>
-            <li>Parcourez les catégories, recherchez des produits fictifs et ouvrez leurs fiches.</li>
-            <li>Ajoutez des produits au panier ou aux favoris pour explorer le parcours.</li>
-            <li>La demande de commande reste une simulation locale et n’est transmise à personne.</li>
+            <li>Les fiches confirmées apparaîtront lorsque le catalogue sera ouvert.</li>
+            <li>Le panier temporaire n’envoie ni ne réserve aucun article.</li>
+            <li>Aucune commande n’est actuellement transmise à une boutique.</li>
           </ul>
         </section>
 
         <section class="card">
           <h2>Est-ce qu’une commande sera livrée&nbsp;?</h2>
-          <p>Non. Le bouton de confirmation enregistre seulement une demande de démonstration temporaire sur votre appareil. Une boutique ne la reçoit pas et aucun service de livraison n’est impliqué.</p>
+          <p>Non. Le site ne reçoit pas de commandes. Le contact client, la livraison et les règles d’annulation/remboursement restent à mettre en place.</p>
         </section>
 
         <section class="card">
-          <h2>Puis-je payer avec Wave&nbsp;?</h2>
-          <p>Non. Wave n’est pas connecté dans cette version et aucun paiement n’est demandé. La commission de 1&nbsp;% est une illustration seulement; aucun prélèvement ni versement à un vendeur n’a lieu.</p>
+          <h2>Les commandes du site sont-elles actives&nbsp;?</h2>
+          <p>Non. Le Worker Cloudflare est accessible, mais les commandes restent désactivées. Le site ne transmet aucun panier ni renseignement client.</p>
+        </section>
+
+        <section class="card">
+          <h2>Puis-je payer avec CinetPay&nbsp;?</h2>
+          <p>Non. CinetPay n’est pas connecté au site public et aucun paiement n’est demandé. Un module de préparation Sandbox existe côté serveur, mais il n’est appelé par aucune route. Le compte et le modèle multi-boutiques sont rapportés comme approuvés par le propriétaire; l’intégration et le traitement des commandes ne sont pas ouverts.</p>
         </section>
 
         <section class="card">
@@ -85,7 +96,7 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <p>Petits Prix · application de démonstration</p>
+        <p>Petits Prix · catalogue en préparation</p>
         <p><a href="../confidentialite/">Confidentialité</a> · <a href="mailto:kiffiguehi3@gmail.com">Contact</a></p>
       </div>
     </footer>
