@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Découvrez Petits Prix, une démonstration de marketplace de produits neufs abordables à Abidjan.">
+    <meta name="description" content="Le catalogue Petits Prix se prépare avec les boutiques partenaires. Aucune commande ni aucun paiement n’est encore ouvert.">
     <meta name="theme-color" content="#fbfaf7">
-    <title>Petits Prix — Une marketplace à découvrir</title>
+    <meta name="store-api-url" content="https://petits-prix-orders.petits-prix.workers.dev">
+    <title>Petits Prix — Boutique en préparation</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -16,7 +17,8 @@
           <span>Petits Prix</span>
         </a>
         <nav class="nav-links" aria-label="Navigation principale">
-          <a href="./" aria-current="page">Accueil</a>
+          <a href="#catalogue">Catalogue</a>
+          <a href="#panier">Panier <span class="cart-count" data-cart-count>0</span></a>
           <a href="aide/">Aide</a>
           <a href="confidentialite/">Confidentialité</a>
         </nav>
@@ -24,64 +26,69 @@
     </header>
 
     <main class="page showcase">
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero shop-hero" aria-labelledby="hero-title">
         <div>
-          <p class="eyebrow">Une idée pour Abidjan</p>
-          <h1 id="hero-title">Les petits prix ont leur place.</h1>
-          <p class="lede">Petits Prix imagine une marketplace de produits neufs abordables, proposés par des boutiques d’Abidjan. Une expérience à découvrir en toute simplicité.</p>
+          <p class="eyebrow">La boutique se prépare</p>
+          <h1 id="hero-title">Des offres réelles, dès que les stocks sont confirmés.</h1>
+          <p class="lede">Petits Prix prépare son catalogue avec les boutiques partenaires d’Abidjan. Seuls les articles, prix et stocks confirmés seront affichés.</p>
           <div class="hero-actions">
-            <a class="button button-green" href="#decouvrir">Découvrir le concept <span aria-hidden="true">→</span></a>
-            <a class="text-link" href="aide/">Comprendre la démo <span aria-hidden="true">↗</span></a>
+            <a class="button button-green" href="#catalogue">Explorer le catalogue <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="aide/">En savoir plus <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div class="hero-visual" aria-label="Illustration du concept Petits Prix">
           <div class="visual-top"><span>Petits Prix</span><span>✦</span></div>
           <div class="visual-content">
-            <span class="visual-label">LA SÉLECTION</span>
-            <p>De belles idées,<br>à petits prix.</p>
-            <span class="visual-pill">Prix en FCFA</span>
+            <span class="visual-label">CATALOGUE DES BOUTIQUES</span>
+            <p>Les offres<br>se préparent.</p>
+            <span class="visual-pill">Commandes désactivées</span>
           </div>
-          <div class="visual-bottom"><span>Abidjan</span><span>Marketplace de démonstration</span></div>
+          <div class="visual-bottom"><span>Abidjan</span><span>Offres à confirmer</span></div>
         </div>
       </section>
 
-      <aside class="notice" aria-label="Information importante sur la démo">
+      <aside class="notice shop-notice" aria-label="Information importante sur la boutique">
         <span class="notice-icon" aria-hidden="true">!</span>
-        <p><strong>Une démonstration, pas une boutique en ligne.</strong> Les produits et boutiques sont fictifs&nbsp;: aucune commande réelle, aucun paiement ni aucune livraison ne sont possibles.</p>
+        <p><strong>Les commandes ne sont pas encore ouvertes.</strong> Aucun article réel n’est publié pour le moment. Le panier est temporaire; aucun paiement CinetPay ni aucune livraison n’est organisé par ce site.</p>
       </aside>
 
-      <section class="concept" id="decouvrir" aria-labelledby="concept-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Le concept</p>
-            <h2 id="concept-title">Une autre façon d’imaginer les petits prix.</h2>
+      <section class="store-layout" id="catalogue" aria-labelledby="catalogue-title">
+        <div class="catalogue">
+          <div class="section-heading store-heading">
+            <div>
+              <p class="eyebrow">Catalogue des boutiques</p>
+              <h2 id="catalogue-title">Les offres confirmées apparaîtront ici.</h2>
+            </div>
+            <p>Le site n’affiche que les fiches chargées depuis l’API du catalogue; aucun exemple n’est présenté comme un article à vendre.</p>
           </div>
-          <p>Une vitrine pour explorer une expérience de marketplace pensée autour de produits neufs et de boutiques d’Abidjan.</p>
+          <div class="product-grid" data-product-grid aria-live="polite">
+            <p class="product-empty" role="status">Le catalogue réel sera affiché lorsque l’API sécurisée sera connectée.</p>
+          </div>
         </div>
-        <div class="feature-grid">
-          <article class="card feature-card">
-            <span class="feature-icon" aria-hidden="true">✦</span>
-            <h3>Des produits neufs</h3>
-            <p>Découvrez le principe d’un catalogue fictif d’articles neufs à prix abordables.</p>
-          </article>
-          <article class="card feature-card">
-            <span class="feature-icon" aria-hidden="true">◎</span>
-            <h3>À l’esprit d’Abidjan</h3>
-            <p>Une marketplace imaginée autour de boutiques de la ville, avec des prix en FCFA.</p>
-          </article>
-          <article class="card feature-card">
-            <span class="feature-icon" aria-hidden="true">◇</span>
-            <h3>Une exploration sans achat</h3>
-            <p>La démo permet d’imaginer le parcours sans passer de commande ni payer.</p>
-          </article>
-        </div>
+
+        <aside class="card cart-panel" id="panier" aria-labelledby="cart-title">
+          <p class="eyebrow">Votre sélection</p>
+          <h2 id="cart-title">Panier temporaire <span class="cart-count" data-cart-count>0</span></h2>
+          <p class="cart-note">Le panier reste dans la mémoire de cette page et disparaît au rechargement. Il ne contient pas de coordonnées client.</p>
+          <div class="cart-items" data-cart-items aria-live="polite" aria-relevant="additions removals text">
+            <p class="cart-empty">Votre panier est vide.</p>
+          </div>
+          <p class="cart-total"><span>Total indicatif</span><strong data-cart-total>—</strong></p>
+          <button class="button checkout-button" type="button" disabled>Commandes désactivées</button>
+          <p class="checkout-note">Le panier ne transmet ni ne réserve aucun article.</p>
+          <div class="payment-status">
+            <span class="payment-indicator" aria-hidden="true"></span>
+            <div><strong>Paiement CinetPay désactivé</strong>            <p>Aucun paiement n’est demandé ni traité.</p></div>
+          </div>
+          <p class="cart-feedback" data-cart-feedback role="status" aria-live="polite"></p>
+        </aside>
       </section>
 
       <section class="showcase-end" aria-labelledby="more-title">
         <div>
-          <p class="eyebrow">Pour aller plus loin</p>
-          <h2 id="more-title">Des questions sur la démo&nbsp;?</h2>
-          <p>Retrouvez les réponses utiles et les informations sur la confidentialité.</p>
+          <p class="eyebrow">Avant une ouverture réelle</p>
+          <h2 id="more-title">Les prochaines étapes restent à valider.</h2>
+          <p>Le site est relié au Worker Cloudflare, mais le catalogue réel est encore vide et les commandes restent désactivées. Le parcours de contact, de livraison, d’annulation et de remboursement reste à définir. CinetPay est désactivé et aucune commande réelle n’est acceptée.</p>
         </div>
         <div class="end-links">
           <a class="button" href="aide/">Consulter l’aide <span aria-hidden="true">→</span></a>
@@ -92,9 +99,10 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <p>Petits Prix · marketplace de démonstration</p>
+        <p>Petits Prix · catalogue en préparation, commandes désactivées</p>
         <p><a href="aide/">Aide</a> · <a href="confidentialite/">Confidentialité</a></p>
       </div>
     </footer>
+    <script src="boutique.js" defer></script>
   </body>
 </html>

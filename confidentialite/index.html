@@ -30,10 +30,16 @@
 
       <aside class="notice" aria-label="Portée de cette notice">
         <span class="notice-icon" aria-hidden="true">i</span>
-        <p><strong>Version démo uniquement.</strong> L’application ne possède pas de compte, ne transmet pas les commandes ou formulaires à une boutique, n’accepte pas de paiement et n’est pas connectée à Wave ou Supabase.</p>
+        <p><strong>Version démo uniquement.</strong> L’application ne possède pas de compte, ne transmet pas les commandes ou formulaires à une boutique, n’accepte pas de paiement et n’est pas connectée à un service de paiement ou à Supabase.</p>
       </aside>
 
       <div class="content-grid">
+        <section class="card">
+          <h2>Site vitrine et panier temporaire</h2>
+          <p>Aucune fiche produit réelle n’est actuellement affichée. Le panier fonctionne uniquement dans la mémoire de la page : son contenu disparaît lorsque la page est rechargée ou fermée.</p>
+          <p>Le site interroge le Worker Cloudflare pour le catalogue, mais ne transmet ni panier ni commande et ne demande aucune coordonnée client. La base D1 ne contient aucun article; le Worker refuse l’accès au catalogue et aux commandes tant que les fonctions restent désactivées. CinetPay est désactivé; le module Sandbox n’est appelé par aucune route.</p>
+        </section>
+
         <section class="card">
           <h2>Éditeur et contact</h2>
           <p>Éditeur déclaré&nbsp;: <strong>Guehi Kiffi</strong>, Côte d’Ivoire.</p>
@@ -55,8 +61,13 @@
 
         <section class="card">
           <h2>Comptes, commandes et paiements</h2>
-          <p>Cette version ne propose ni inscription ni connexion à un compte. Une demande de commande ou une proposition de boutique affichée dans l’app est une simulation qui reste sur l’appareil. Aucune commande réelle n’est envoyée, aucun paiement Wave n’est traité et aucune livraison ou mise en relation avec une boutique n’est fournie.</p>
-          <p>Les prix FCFA, la commission de 1&nbsp;% et les montants vendeurs sont des exemples indicatifs, pas une offre de vente, une facture ou un paiement.</p>
+          <p>Cette version ne propose ni inscription ni connexion à un compte. Aucune commande réelle n’est envoyée, aucun paiement n’est traité et aucune livraison ou mise en relation avec une boutique n’est fournie.</p>
+          <p>Les prix et stocks d’exemple de l’application mobile ne sont pas des offres de vente. Aucun paiement, prélèvement de commission ni reversement n’a lieu sur ce site.</p>
+        </section>
+
+        <section class="card">
+          <h2>Backend et protection contre les abus</h2>
+          <p>Les requêtes du catalogue passent par un Worker Cloudflare public. Pour limiter les abus, le Worker utilise l’adresse IP de connexion comme clé de limitation de débit; le code ne conserve pas cette adresse dans D1. Les routes de catalogue et de commandes restent fermées. Cloudflare peut traiter des données techniques de connexion selon ses propres règles. Cette notice devra être réévaluée avant toute collecte de coordonnées client ou ouverture des commandes.</p>
         </section>
 
         <section class="card">
@@ -67,7 +78,7 @@
 
         <section class="card">
           <h2>Changements de version</h2>
-          <p>Cette notice devra être mise à jour si une future version ajoute des comptes, un service d’analyse, l’envoi de formulaires, des commandes, des paiements ou d’autres services connectés. Cette page ne décrit que la démo et ne constitue pas un avis juridique ni une garantie de conformité réglementaire.</p>
+          <p>Cette notice devra être mise à jour avant l’ouverture de l’API ou l’ajout de comptes, de formulaires, de commandes, de paiements ou d’autres services connectés. Cette page ne constitue pas un avis juridique ni une garantie de conformité réglementaire.</p>
         </section>
       </div>
 
@@ -76,7 +87,7 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <p>Petits Prix · application de démonstration</p>
+        <p>Petits Prix · boutique en préparation</p>
         <p><a href="../aide/">Aide</a> · <a href="mailto:kiffiguehi3@gmail.com">Contact</a></p>
       </div>
     </footer>

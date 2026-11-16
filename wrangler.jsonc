@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "petits-prix-orders",
+  "main": "backend/worker.js",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "ALLOWED_ORIGIN": "https://kiffi27.github.io",
+    "STORE_ENABLED": "false",
+    "ORDERS_ENABLED": "false"
+  },
+  "ratelimits": [
+    {
+      "name": "API_RATE_LIMITER",
+      "namespace_id": "71611221600",
+      "simple": {
+        "limit": 100,
+        "period": 60
+      }
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "petits-prix-orders",
+      "database_id": "486aeee4-ae06-4630-a5e7-f5bc8b62f599",
+      "migrations_dir": "backend/migrations"
+    }
+  ]
+}
