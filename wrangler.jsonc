@@ -7,8 +7,9 @@
   "preview_urls": false,
   "vars": {
     "ALLOWED_ORIGIN": "https://kiffi27.github.io",
-    "STORE_ENABLED": "false",
-    "ORDERS_ENABLED": "false"
+    "STORE_ENABLED": "true",
+    "ORDERS_ENABLED": "false",
+    "ORDER_CONTACT_ENABLED": "false"
   },
   "ratelimits": [
     {
